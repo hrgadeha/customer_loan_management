@@ -2,7 +2,8 @@
 // For license information, please see license.txt
 
 cur_frm.add_fetch("customer","customer_name","customer_name")
-
+cur_frm.add_fetch("loan_duration","days","days")
+cur_frm.add_fetch("loan_duration","interest_rate","interest_rate")
 
 frappe.ui.form.on('Customer Loan Grant', {
 	loan_duration: function(frm) {
