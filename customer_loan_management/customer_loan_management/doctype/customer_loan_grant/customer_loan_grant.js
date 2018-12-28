@@ -9,6 +9,7 @@ frappe.ui.form.on('Customer Loan Grant', {
 		var instalment_amount = (((loan_amount * interest_rate) + loan_amount) / loan_days);
 
 		frm.set_value("instalment_amount",instalment_amount);
+		frm.set_value("due_amount",loan_amount);
 	}
 });
 
@@ -20,6 +21,7 @@ frappe.ui.form.on('Customer Loan Grant', {
 		var instalment_amount = (((loan_amount * interest_rate) + loan_amount) / loan_days);
 
 		frm.set_value("instalment_amount",instalment_amount);
+		frm.set_value("due_amount",loan_amount);
 	}
 });
 
@@ -31,6 +33,7 @@ frappe.ui.form.on('Customer Loan Grant', {
 		var instalment_amount = (((loan_amount * interest_rate) + loan_amount) / loan_days);
 
 		frm.set_value("instalment_amount",instalment_amount);
+		frm.set_value("due_amount",loan_amount);
 	}
 });
 
@@ -42,5 +45,6 @@ frappe.ui.form.on('Customer Loan Grant', {
 		var instalment_amount = (((loan_amount * interest_rate) + loan_amount) / loan_days);
 
 		frm.set_value("instalment_amount",instalment_amount);
+		frm.set_value("due_amount",loan_amount);
 	}
 });

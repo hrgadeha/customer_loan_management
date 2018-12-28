@@ -9,9 +9,9 @@ frappe.ui.form.on('Loan Collection', {
 
 frappe.ui.form.on('Loan Collection', {
 	customer_loan_grant: function(frm) {
-		var loan_amount = frm.doc.loan_amount;
+		var loan_due_amount = frm.doc.loan_due_amount;
 		var instalment_amount = frm.doc.instalment_amount;
-		var due_amount = (loan_amount - instalment_amount);
+		var due_amount = (loan_due_amount - instalment_amount);
 
 		frm.set_value("due_amount",due_amount);
 	}
@@ -19,9 +19,9 @@ frappe.ui.form.on('Loan Collection', {
 
 frappe.ui.form.on('Loan Collection', {
 	instalment_amount: function(frm) {
-		var loan_amount = frm.doc.loan_amount;
+		var loan_due_amount = frm.doc.loan_due_amount;
 		var instalment_amount = frm.doc.instalment_amount;
-		var due_amount = (loan_amount - instalment_amount);
+		var due_amount = (loan_due_amount - instalment_amount);
 
 		frm.set_value("due_amount",due_amount);
 	}
