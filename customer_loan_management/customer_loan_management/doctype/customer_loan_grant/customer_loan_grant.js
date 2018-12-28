@@ -1,6 +1,9 @@
 // Copyright (c) 2018, frappe and contributors
 // For license information, please see license.txt
 
+cur_frm.add_fetch("customer","customer_name","customer_name")
+
+
 frappe.ui.form.on('Customer Loan Grant', {
 	loan_duration: function(frm) {
 		var loan_amount = frm.doc.loan_amount;
