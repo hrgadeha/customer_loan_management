@@ -15,11 +15,11 @@ def execute(filters=None):
 def get_column():
 	return [_("Customer") + ":Link/Customer:150",
 			_("Sales Partner") + ":Link/Sales Partner:150",
-			_("Loan Granted Amount") + ":Currency:150",
-			_("Due Amount") + ":Currency:150",
-			_("Over Due Days") + ":Int:150",
-			_("Over Due Amount") + ":Currency:150",
-			_("Total Outstanding Amount") + ":Currency:150"]
+			_("Loan Granted Amount") + ":Currency:180",
+			_("Due Amount") + ":Currency:100",
+			_("Over Due Days") + ":Int:100",
+			_("Over Due Amount") + ":Currency:100",
+			_("Total Outstanding Amount") + ":Currency:180"]
 
 def get_data(conditions,filters):
 

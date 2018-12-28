@@ -1,6 +1,7 @@
 // Copyright (c) 2018, frappe and contributors
 // For license information, please see license.txt
 
+cur_frm.add_fetch("customer_loan_grant","customer","customer")
 cur_frm.add_fetch("customer_loan_grant","loan_amount","loan_amount")
 cur_frm.add_fetch("customer_loan_grant","due_amount","loan_due_amount")
 cur_frm.add_fetch("customer_loan_grant","instalment_amount","instalment_amount")
