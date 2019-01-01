@@ -18,12 +18,11 @@ def get_column():
 			_("Loan Granted Amount") + ":Currency:180",
 			_("Due Amount") + ":Currency:100",
 			_("Over Due Days") + ":Int:100",
-			_("Over Due Amount") + ":Currency:100",
 			_("Total Outstanding Amount") + ":Currency:180"]
 
 def get_data(conditions,filters):
 
-	to_do = frappe.db.sql("""select customer_name, sales_partner, loan_amount, due_amount, over_due_days, over_due_amount, total_outstanding_amount from `tabCustomer Loan Grant` where docstatus is not null %s order by date asc;"""%conditions, filters, as_list=1)
+	to_do = frappe.db.sql("""select customer, sales_partner, loan_amount, due_amount, over_due_days, total_outstanding_amount from `tabCustomer Loan Grant` where docstatus is not null %s order by date asc;"""%conditions, filters, as_list=1)
 	return to_do
 
 def get_conditions(filters):

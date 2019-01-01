@@ -11,6 +11,13 @@ def update_due_amount(doctype, due_amount = None, customer_loan = None):
 	doc_cus_loan.save()
 
 @frappe.whitelist(allow_guest=True)
+def update_outstanding_amount(doctype, total_outstanding_amount = None, customer_loan = None):
+	doc_cus_loan = frappe.get_doc("Customer Loan Grant", customer_loan)
+	doc_cus_loan.total_outstanding_amount = total_outstanding_amount
+	doc_cus_loan.save()
+
+
+@frappe.whitelist(allow_guest=True)
 def update_rece_account(doctype, date = None, accounts_receivable = None, loan_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
