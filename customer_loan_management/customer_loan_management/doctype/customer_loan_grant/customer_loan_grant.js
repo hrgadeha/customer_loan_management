@@ -100,7 +100,7 @@ frappe.ui.form.on("Customer Loan Grant", "onload", function(frm) {
     cur_frm.set_query("interest_income_account", function() {
         return {
             "filters": {
-                "account_type": "Receivable"
+                "account_type": "Income Account"
             }
         };
     });
