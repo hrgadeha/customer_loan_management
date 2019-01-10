@@ -5,17 +5,18 @@ from frappe.model.document import Document
 from frappe.utils import flt
 
 @frappe.whitelist(allow_guest=True)
-def update_due_amount(doctype, due_amount = None, customer_loan = None):
+def update_due_amount(doctype, due_amount = None, customer_loan = None, total_outstanding_amount = None, date = None):
 	doc_cus_loan = frappe.get_doc("Customer Loan Grant", customer_loan)
 	doc_cus_loan.due_amount = due_amount
-	doc_cus_loan.save()
-
-@frappe.whitelist(allow_guest=True)
-def update_outstanding_amount(doctype, total_outstanding_amount = None, customer_loan = None):
-	doc_cus_loan = frappe.get_doc("Customer Loan Grant", customer_loan)
 	doc_cus_loan.total_outstanding_amount = total_outstanding_amount
+	doc_cus_loan.last_loan_collection_date = date
 	doc_cus_loan.save()
 
+#@frappe.whitelist(allow_guest=True)
+#def update_outstanding_amount(doctype, total_outstanding_amount = None, customer_loan = None):
+#	doc_cus_loan = frappe.get_doc("Customer Loan Grant", customer_loan)
+#	doc_cus_loan.total_outstanding_amount = total_outstanding_amount
+#	doc_cus_loan.save()
 
 @frappe.whitelist(allow_guest=True)
 def update_rece_account(doctype, date = None, accounts_receivable = None, loan_amount = None, customer = None, name = None):
@@ -107,6 +108,7 @@ def update_penalty_amount(doctype, penalty_income_account = None, date = None, p
 	gl_entry.insert(ignore_permissions=True)
 	gl_entry.submit()
 
+
 @frappe.whitelist(allow_guest=True)
 def update_penalty_amount_ar(doctype, accounts_receivable = None, date = None, penalty_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
@@ -142,6 +144,7 @@ def update_interest_amount(doctype, interest_income_account = None, date = None,
 	})
 	gl_entry.insert(ignore_permissions=True)
 	gl_entry.submit()
+
 
 @frappe.whitelist(allow_guest=True)
 def update_interest_amount_ar(doctype, accounts_receivable = None, date = None, interest_amount = None, customer = None, name = None):
