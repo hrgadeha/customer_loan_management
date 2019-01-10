@@ -7,7 +7,7 @@ cur_frm.add_fetch("customer_loan_grant","due_amount","loan_due_amount")
 cur_frm.add_fetch("customer_loan_grant","instalment_amount","instalment_amount")
 cur_frm.add_fetch("customer_loan_grant","cash_account","cash_account")
 cur_frm.add_fetch("customer_loan_grant","accounts_receivable","accounts_receivable")
-cur_frm.add_fetch("customer_loan_grant","due_days","due_days")
+cur_frm.add_fetch("customer_loan_grant","collection_days","due_days")
 cur_frm.add_fetch("customer_loan_grant","last_loan_collection_date","loan_grant_date")
 
 /* ##############################################       Due Days Calculation   ##########################################################*/
