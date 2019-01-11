@@ -3,12 +3,13 @@
 
 cur_frm.add_fetch("customer_loan_grant","customer","customer")
 cur_frm.add_fetch("customer_loan_grant","loan_amount","loan_amount")
-cur_frm.add_fetch("customer_loan_grant","due_amount","loan_due_amount")
+cur_frm.add_fetch("customer_loan_grant","due_amount","due_amount")
 cur_frm.add_fetch("customer_loan_grant","instalment_amount","instalment_amount")
 cur_frm.add_fetch("customer_loan_grant","cash_account","cash_account")
 cur_frm.add_fetch("customer_loan_grant","accounts_receivable","accounts_receivable")
 cur_frm.add_fetch("customer_loan_grant","collection_days","due_days")
 cur_frm.add_fetch("customer_loan_grant","last_loan_collection_date","loan_grant_date")
+cur_frm.add_fetch("customer_loan_grant","over_due_amount","last_instalment_over_due_amount")
 
 
 frappe.ui.form.on("Loan Collection", "onload", function(frm) {
@@ -20,6 +21,17 @@ frappe.ui.form.on("Loan Collection", "onload", function(frm) {
         };
     });
 });
+
+frappe.ui.form.on("Loan Collection", "onload", function(frm) {
+    cur_frm.set_query("customer_loan_grant", function() {
+        return {
+            "filters": {
+                "docstatus": 1
+            }
+        };
+    });
+});
+
 
 /* ##############################################       Due Days Calculation   ##########################################################*/
 
@@ -35,16 +47,53 @@ frappe.ui.form.on('Loan Collection', {
   		var temp1 = new Date(parts1[0], parts1[1]-1, parts1[2]); // months are 0-based
 		var timeDiff = Math.abs(temp1.getTime() - temp.getTime());
 		var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-		//var over_due_days = (diffDays + 1) - due_days;
+		var diffDays_1 = diffDays + 1;
+		var over_due_days = diffDays_1 - due_days;
 
 			if(frm.doc.date < frm.doc.loan_grant_date){
 				frappe.msgprint("Date can not be Lesser Than Loan Grant Date")
 			}
-			else if(due_days <= diffDays){
-				frm.set_value("over_due_days",diffDays);
-				frappe.msgprint("Loan Collection Overdue By "+diffDays+" Day(s). Please Enter One Day Penalty Amount." )
+			else if(over_due_days > 0){
+				frm.set_value("over_due_days",over_due_days);
+				frappe.msgprint("Loan Collection Overdue By "+over_due_days+" Day(s). Please Enter One Day Penalty Amount." )
 				frm.set_df_property("one_day_penalty_amount","reqd",1);
 				frm.set_df_property("penalty_income_account","reqd",1);
+			}
+			else{
+				frm.set_df_property("one_day_penalty_amount","reqd",0);
+				frm.set_df_property("penalty_income_account","reqd",0);
+			}
+	}
+});
+
+
+frappe.ui.form.on('Loan Collection', {
+	"loan_grant_date": function(frm) {
+		frm.set_value("over_due_days","");
+		var date1 = frm.doc.loan_grant_date;
+		var date2 = frm.doc.date;
+		var due_days = frm.doc.due_days;
+		var parts = date2.match(/(\d+)/g);
+  		var temp =  new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
+		var parts1 = date1.match(/(\d+)/g);
+  		var temp1 = new Date(parts1[0], parts1[1]-1, parts1[2]); // months are 0-based
+		var timeDiff = Math.abs(temp1.getTime() - temp.getTime());
+		var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+		var diffDays_1 = diffDays + 1;
+		var over_due_days = diffDays_1 - due_days;
+
+			if(frm.doc.date < frm.doc.loan_grant_date){
+				frappe.msgprint("Date can not be Lesser Than Loan Grant Date")
+			}
+			else if(over_due_days > 0){
+				frm.set_value("over_due_days",over_due_days);
+				frappe.msgprint("Loan Collection Overdue By "+over_due_days+" Day(s). Please Enter One Day Penalty Amount." )
+				frm.set_df_property("one_day_penalty_amount","reqd",1);
+				frm.set_df_property("penalty_income_account","reqd",1);
+			}
+			else{
+				frm.set_df_property("one_day_penalty_amount","reqd",0);
+				frm.set_df_property("penalty_income_account","reqd",0);
 			}
 	}
 });
@@ -55,21 +104,35 @@ frappe.ui.form.on('Loan Collection', {
 
 frappe.ui.form.on('Loan Collection', {
 	"customer_loan_grant": function(frm) {
-		var loan_due_amount = frm.doc.loan_due_amount;
+		var due_amount = frm.doc.due_amount;
+		var last_instalment_over_due_amount = frm.doc.last_instalment_over_due_amount;
+		var over_due_amount = frm.doc.over_due_amount;
+		var over_due_days = frm.doc.over_due_days;
 		var instalment_amount = frm.doc.instalment_amount;
-		var due_amount = (loan_due_amount - instalment_amount);
+		var loan_due_amount__after_instalment_submitted_ = (due_amount - instalment_amount);
+		var over_due_amount = instalment_amount * over_due_days;
+		var total_over_due_amount = ( last_instalment_over_due_amount + over_due_amount );
 
-		frm.set_value("due_amount",due_amount);
+		frm.set_value("loan_due_amount__after_instalment_submitted_",loan_due_amount__after_instalment_submitted_);
+		frm.set_value("over_due_amount",over_due_amount);	
+		frm.set_value("total_over_due_amount",total_over_due_amount);
 	}
 });
 
 frappe.ui.form.on('Loan Collection', {
 	"instalment_amount": function(frm) {
-		var loan_due_amount = frm.doc.loan_due_amount;
+		var due_amount = frm.doc.due_amount;
+		var last_instalment_over_due_amount = frm.doc.last_instalment_over_due_amount;
+		var over_due_amount = frm.doc.over_due_amount;
+		var over_due_days = frm.doc.over_due_days;
 		var instalment_amount = frm.doc.instalment_amount;
-		var due_amount = (loan_due_amount - instalment_amount);
+		var loan_due_amount__after_instalment_submitted_ = (due_amount - instalment_amount);
+		var over_due_amount = instalment_amount * over_due_days;
+		var total_over_due_amount = ( last_instalment_over_due_amount + over_due_amount );
 
-		frm.set_value("due_amount",due_amount);
+		frm.set_value("loan_due_amount__after_instalment_submitted_",loan_due_amount__after_instalment_submitted_);
+		frm.set_value("over_due_amount",over_due_amount);
+		frm.set_value("total_over_due_amount",total_over_due_amount);
 	}
 });
 
@@ -77,27 +140,12 @@ frappe.ui.form.on('Loan Collection', {
 /* ##############################################  Penalty Amount Calculation   ##########################################################*/
 
 frappe.ui.form.on('Loan Collection', {
-	"due_amount": function(frm) {
-		var one_day_penalty_amount = frm.doc.one_day_penalty_amount;
-		var over_due_days = frm.doc.over_due_days;
-		var due_amount = frm.doc.due_amount;
-		var penalty_amount = (one_day_penalty_amount * over_due_days);
-		var total_outstanding_amount = (due_amount + penalty_amount);
-
-		frm.set_value("total_outstanding_amount",total_outstanding_amount);
-	}
-});
-
-frappe.ui.form.on('Loan Collection', {
 	"one_day_penalty_amount": function(frm) {
 		var one_day_penalty_amount = frm.doc.one_day_penalty_amount;
 		var over_due_days = frm.doc.over_due_days;
-		var due_amount = frm.doc.due_amount;
 		var penalty_amount = (one_day_penalty_amount * over_due_days);
-		var total_outstanding_amount = (due_amount + penalty_amount);
 
 		frm.set_value("penalty_amount",penalty_amount);
-		frm.set_value("total_outstanding_amount",total_outstanding_amount);
 	}
 });
 
@@ -105,15 +153,18 @@ frappe.ui.form.on('Loan Collection', {
 	"over_due_days": function(frm) {
 		var one_day_penalty_amount = frm.doc.one_day_penalty_amount;
 		var over_due_days = frm.doc.over_due_days;
+		var last_instalment_over_due_amount = frm.doc.last_instalment_over_due_amount;
+		var over_due_amount = frm.doc.over_due_amount;
 		var due_amount = frm.doc.due_amount;
 		var instalment_amount = frm.doc.instalment_amount;
 		var loan_due_amount = instalment_amount * over_due_days;
 		var penalty_amount = (one_day_penalty_amount * over_due_days);
-		var total_outstanding_amount = (due_amount + penalty_amount);
+		var over_due_amount = (over_due_days * instalment_amount);
+		var total_over_due_amount = ( last_instalment_over_due_amount + over_due_amount );
 		
-		frm.set_value("loan_due_amount",loan_due_amount);
 		frm.set_value("penalty_amount",penalty_amount);
-		frm.set_value("total_outstanding_amount",total_outstanding_amount);
+		frm.set_value("over_due_amount",over_due_amount);
+		frm.set_value("total_over_due_amount",total_over_due_amount);
 	}
 });
 
@@ -126,8 +177,9 @@ frappe.call({
 	args: {
 		doctype: "Loan Collection",
 		customer_loan: frm.doc.customer_loan_grant,
-		due_amount: frm.doc.due_amount,
+		due_amount: frm.doc.loan_due_amount__after_instalment_submitted_,
 		total_outstanding_amount: frm.doc.total_outstanding_amount,
+		over_due_amount : frm.doc.total_over_due_amount,
 		date: frm.doc.date
      	},
 
@@ -136,22 +188,6 @@ frappe.call({
 });
 });
 
-/* ##############################################   Outstanding Amount Update  ###########################################################*/
-
-
-/*frappe.ui.form.on("Loan Collection", "on_submit", function(frm, doctype, name) {
-frappe.call({
-	"method": "customer_loan_management.customer_loan_management.loan_due_amount.update_outstanding_amount",
-	args: {
-		doctype: "Loan Collection",
-		customer_loan: frm.doc.customer_loan_grant,
-		
-     	},
-
-	callback:function(r){
-     ;}
-});
-});*/
 
 /* ##############################################    Instalment Account   ################################################################*/
 
