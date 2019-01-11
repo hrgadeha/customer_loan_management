@@ -25,6 +25,7 @@ frappe.ui.form.on("Loan Collection", "onload", function(frm) {
 
 frappe.ui.form.on('Loan Collection', {
 	"date": function(frm) {
+		frm.set_value("over_due_days","");
 		var date1 = frm.doc.loan_grant_date;
 		var date2 = frm.doc.date;
 		var due_days = frm.doc.due_days;
@@ -34,17 +35,14 @@ frappe.ui.form.on('Loan Collection', {
   		var temp1 = new Date(parts1[0], parts1[1]-1, parts1[2]); // months are 0-based
 		var timeDiff = Math.abs(temp1.getTime() - temp.getTime());
 		var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-		var over_due_days = diffDays - due_days;
+		//var over_due_days = (diffDays + 1) - due_days;
 
 			if(frm.doc.date < frm.doc.loan_grant_date){
 				frappe.msgprint("Date can not be Lesser Than Loan Grant Date")
 			}
-			else if(due_days > diffDays){
-				frappe.msgprint("Loan Collection is Within Loan Collection Period")
-			}
-			else if(due_days < diffDays){
-				frm.set_value("over_due_days",over_due_days);
-				frappe.msgprint("Loan Collection Overdue By "+over_due_days+" Days. Please Enter One Day Penalty Amount." )
+			else if(due_days <= diffDays){
+				frm.set_value("over_due_days",diffDays);
+				frappe.msgprint("Loan Collection Overdue By "+diffDays+" Day(s). Please Enter One Day Penalty Amount." )
 				frm.set_df_property("one_day_penalty_amount","reqd",1);
 				frm.set_df_property("penalty_income_account","reqd",1);
 			}
