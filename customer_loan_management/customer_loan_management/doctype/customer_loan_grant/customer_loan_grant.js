@@ -74,38 +74,6 @@ frappe.ui.form.on('Customer Loan Grant', {
 	}
 });
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-frappe.ui.form.on("Customer Loan Grant", "onload", function(frm) {
-    cur_frm.set_query("accounts_receivable", function() {
-        return {
-            "filters": {
-                "account_type": "Receivable"
-            }
-        };
-    });
-});
-
-frappe.ui.form.on("Customer Loan Grant", "onload", function(frm) {
-    cur_frm.set_query("cash_account", function() {
-        return {
-            "filters": {
-                "account_type": "Cash"
-            }
-        };
-    });
-});
-
-frappe.ui.form.on("Customer Loan Grant", "onload", function(frm) {
-    cur_frm.set_query("interest_income_account", function() {
-        return {
-            "filters": {
-                "account_type": "Income Account"
-            }
-        };
-    });
-});
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 frappe.ui.form.on('Customer Loan Grant', {
@@ -160,6 +128,7 @@ frappe.call({
 		cash_account: frm.doc.cash_account,
 		date: frm.doc.date,
 		loan_amount: frm.doc.loan_amount,
+		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
      	},
@@ -177,6 +146,7 @@ frappe.call({
 		accounts_receivable: frm.doc.accounts_receivable,
 		date: frm.doc.date,
 		loan_amount: frm.doc.loan_amount,
+		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
      	},
@@ -196,6 +166,7 @@ frappe.call({
 		interest_income_account: frm.doc.interest_income_account,
 		date: frm.doc.date,
 		interest_amount: frm.doc.interest_amount_per_day,
+		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
      	},
@@ -213,6 +184,7 @@ frappe.call({
 		accounts_receivable: frm.doc.accounts_receivable,
 		date: frm.doc.date,
 		interest_amount: frm.doc.interest_amount_per_day,
+		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
      	},

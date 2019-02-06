@@ -14,7 +14,7 @@ def update_due_amount(doctype, due_amount = None, customer_loan = None, total_ou
 	doc_cus_loan.save()
 
 @frappe.whitelist(allow_guest=True)
-def update_rece_account(doctype, date = None, accounts_receivable = None, loan_amount = None, customer = None, name = None):
+def update_rece_account(doctype, cost_center = None, date = None, accounts_receivable = None, loan_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -22,6 +22,7 @@ def update_rece_account(doctype, date = None, accounts_receivable = None, loan_a
 	"voucher_type":"Customer Loan Grant",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":accounts_receivable,
 	"debit":loan_amount,
 	"debit_in_account_currency":loan_amount
@@ -31,7 +32,7 @@ def update_rece_account(doctype, date = None, accounts_receivable = None, loan_a
 
 
 @frappe.whitelist(allow_guest=True)
-def update_cash_account(doctype, cash_account = None, date = None, loan_amount = None, customer = None, name = None):
+def update_cash_account(doctype, cost_center = None, cash_account = None, date = None, loan_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -39,6 +40,7 @@ def update_cash_account(doctype, cash_account = None, date = None, loan_amount =
 	"voucher_type":"Customer Loan Grant",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":cash_account,
 	"credit":loan_amount,
 	"credit_in_account_currency":loan_amount
@@ -51,7 +53,7 @@ def update_cash_account(doctype, cash_account = None, date = None, loan_amount =
 
 
 @frappe.whitelist(allow_guest=True)
-def update_instalment_amount_ca(doctype, cash_account = None, date = None, instalment_amount = None, customer = None, name = None):
+def update_instalment_amount_ca(doctype, cost_center = None, cash_account = None, date = None, instalment_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -59,6 +61,7 @@ def update_instalment_amount_ca(doctype, cash_account = None, date = None, insta
 	"voucher_type":"Loan Collection",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":cash_account,
 	"debit":instalment_amount,
 	"debit_in_account_currency":instalment_amount
@@ -68,7 +71,7 @@ def update_instalment_amount_ca(doctype, cash_account = None, date = None, insta
 
 
 @frappe.whitelist(allow_guest=True)
-def update_instalment_amount_ar(doctype, accounts_receivable = None, date = None, instalment_amount = None, customer = None, name = None):
+def update_instalment_amount_ar(doctype, cost_center = None, accounts_receivable = None, date = None, instalment_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -76,6 +79,7 @@ def update_instalment_amount_ar(doctype, accounts_receivable = None, date = None
 	"voucher_type":"Loan Collection",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":accounts_receivable,
 	"credit":instalment_amount,
 	"credit_in_account_currency":instalment_amount
@@ -88,7 +92,7 @@ def update_instalment_amount_ar(doctype, accounts_receivable = None, date = None
 
 
 @frappe.whitelist(allow_guest=True)
-def update_penalty_amount(doctype, penalty_income_account = None, date = None, penalty_amount = None, customer = None, name = None):
+def update_penalty_amount(doctype, cost_center = None, penalty_income_account = None, date = None, penalty_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -96,6 +100,7 @@ def update_penalty_amount(doctype, penalty_income_account = None, date = None, p
 	"voucher_type":"Loan Collection",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":penalty_income_account,
 	"credit":penalty_amount,
 	"credit_in_account_currency":penalty_amount
@@ -105,7 +110,7 @@ def update_penalty_amount(doctype, penalty_income_account = None, date = None, p
 
 
 @frappe.whitelist(allow_guest=True)
-def update_penalty_amount_ar(doctype, accounts_receivable = None, date = None, penalty_amount = None, customer = None, name = None):
+def update_penalty_amount_ar(doctype, cost_center = None, accounts_receivable = None, date = None, penalty_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -113,6 +118,7 @@ def update_penalty_amount_ar(doctype, accounts_receivable = None, date = None, p
 	"voucher_type":"Loan Collection",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":accounts_receivable,
 	"debit":penalty_amount,
 	"debit_in_account_currency":penalty_amount
@@ -125,7 +131,7 @@ def update_penalty_amount_ar(doctype, accounts_receivable = None, date = None, p
 
 
 @frappe.whitelist(allow_guest=True)
-def update_interest_amount(doctype, interest_income_account = None, date = None, interest_amount = None, customer = None, name = None):
+def update_interest_amount(doctype, cost_center = None, interest_income_account = None, date = None, interest_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -133,6 +139,7 @@ def update_interest_amount(doctype, interest_income_account = None, date = None,
 	"voucher_type":"Customer Loan Grant",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":interest_income_account,
 	"credit":interest_amount,
 	"credit_in_account_currency":interest_amount
@@ -142,7 +149,7 @@ def update_interest_amount(doctype, interest_income_account = None, date = None,
 
 
 @frappe.whitelist(allow_guest=True)
-def update_interest_amount_ar(doctype, accounts_receivable = None, date = None, interest_amount = None, customer = None, name = None):
+def update_interest_amount_ar(doctype, cost_center = None, accounts_receivable = None, date = None, interest_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 
 	"posting_date": date,
@@ -150,6 +157,7 @@ def update_interest_amount_ar(doctype, accounts_receivable = None, date = None, 
 	"voucher_type":"Customer Loan Grant",
 	"party_type":"Customer",
 	"voucher_no":name,
+	"cost_center":cost_center,
 	"account":accounts_receivable,
 	"debit":interest_amount,
 	"debit_in_account_currency":interest_amount

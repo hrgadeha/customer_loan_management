@@ -55,7 +55,6 @@ frappe.ui.form.on('Loan Collection', {
 			}
 			else if(over_due_days > 0){
 				frm.set_value("over_due_days",over_due_days);
-				frappe.msgprint("Loan Collection Overdue By "+over_due_days+" Day(s). Please Enter One Day Penalty Amount." )
 				frm.set_df_property("one_day_penalty_amount","reqd",1);
 				frm.set_df_property("penalty_income_account","reqd",1);
 			}
@@ -87,7 +86,6 @@ frappe.ui.form.on('Loan Collection', {
 			}
 			else if(over_due_days > 0){
 				frm.set_value("over_due_days",over_due_days);
-				frappe.msgprint("Loan Collection Overdue By "+over_due_days+" Day(s). Please Enter One Day Penalty Amount." )
 				frm.set_df_property("one_day_penalty_amount","reqd",1);
 				frm.set_df_property("penalty_income_account","reqd",1);
 			}
@@ -179,6 +177,7 @@ frappe.call({
 		customer_loan: frm.doc.customer_loan_grant,
 		due_amount: frm.doc.loan_due_amount__after_instalment_submitted_,
 		total_outstanding_amount: frm.doc.total_outstanding_amount,
+		cost_center: frm.doc.cost_center,
 		over_due_amount : frm.doc.total_over_due_amount,
 		date: frm.doc.date
      	},
@@ -199,6 +198,7 @@ frappe.call({
 		cash_account: frm.doc.cash_account,
 		date: frm.doc.date,
 		instalment_amount: frm.doc.instalment_amount,
+		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
      	},
@@ -216,6 +216,7 @@ frappe.call({
 		accounts_receivable: frm.doc.accounts_receivable,
 		date: frm.doc.date,
 		instalment_amount: frm.doc.instalment_amount,
+		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
      	},
@@ -235,6 +236,7 @@ frappe.call({
 		penalty_income_account: frm.doc.penalty_income_account,
 		date: frm.doc.date,
 		penalty_amount: frm.doc.penalty_amount,
+		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
      	},
@@ -253,6 +255,7 @@ frappe.call({
 		date: frm.doc.date,
 		penalty_amount: frm.doc.penalty_amount,
 		customer: frm.doc.customer,
+		cost_center: frm.doc.cost_center,
 		name: frm.doc.name
      	},
 
