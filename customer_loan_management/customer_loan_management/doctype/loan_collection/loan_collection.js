@@ -10,17 +10,7 @@ cur_frm.add_fetch("customer_loan_grant","accounts_receivable","accounts_receivab
 cur_frm.add_fetch("customer_loan_grant","collection_days","due_days")
 cur_frm.add_fetch("customer_loan_grant","last_loan_collection_date","loan_grant_date")
 cur_frm.add_fetch("customer_loan_grant","over_due_amount","last_instalment_over_due_amount")
-
-
-frappe.ui.form.on("Loan Collection", "onload", function(frm) {
-    cur_frm.set_query("penalty_income_account", function() {
-        return {
-            "filters": {
-                "account_type": "Income Account"
-            }
-        };
-    });
-});
+cur_frm.add_fetch("customer_loan_grant","cost_center","cost_center")
 
 frappe.ui.form.on("Loan Collection", "onload", function(frm) {
     cur_frm.set_query("customer_loan_grant", function() {
