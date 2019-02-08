@@ -14,6 +14,11 @@ def update_due_amount(doctype, due_amount = None, customer_loan = None, total_ou
 	doc_cus_loan.save()
 
 @frappe.whitelist(allow_guest=True)
+def getUserAccount(user):
+	account = frappe.get_value('Loan User Account Setting', user, 'account')
+	return account
+
+@frappe.whitelist(allow_guest=True)
 def update_rece_account(doctype, cost_center = None, date = None, accounts_receivable = None, loan_amount = None, customer = None, name = None):
 	gl_entry = frappe.get_doc({
 	"doctype": "GL Entry", 

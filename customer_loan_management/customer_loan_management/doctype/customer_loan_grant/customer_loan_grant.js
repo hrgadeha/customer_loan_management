@@ -193,3 +193,17 @@ frappe.call({
      ;}
 });
 });
+
+frappe.ui.form.on("Customer Loan Grant", {
+  "onload": function(frm) {	
+    frappe.call({
+    "method": "customer_loan_management.customer_loan_management.loan_due_amount.getUserAccount",
+	args: {
+		"user": frappe.session.user
+},
+	callback:function(r){
+			frm.set_value("cash_account",r.message);
+	}
+    });
+}
+});
