@@ -90,23 +90,12 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"customer_loan_management.tasks.all"
-# 	],
-# 	"daily": [
-# 		"customer_loan_management.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"customer_loan_management.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"customer_loan_management.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"customer_loan_management.tasks.monthly"
-# 	]
-# }
+scheduler_events = {
+	"daily": [
+		"customer_loan_management.customer_loan_management.loan_due_amount.update_interest_amount",
+		"customer_loan_management.customer_loan_management.loan_due_amount.update_interest_amount_ar"
+	]
+}
 
 # Testing
 # -------

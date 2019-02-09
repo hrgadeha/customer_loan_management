@@ -6,6 +6,7 @@ cur_frm.add_fetch("customer_loan_grant","civil_id","civil_id")
 cur_frm.add_fetch("customer_loan_grant","loan_amount","loan_amount")
 cur_frm.add_fetch("customer_loan_grant","due_amount","due_amount")
 cur_frm.add_fetch("customer_loan_grant","instalment_amount","instalment_amount")
+cur_frm.add_fetch("customer_loan_grant","instalment_amount","received_amount")
 cur_frm.add_fetch("customer_loan_grant","cash_account","cash_account")
 cur_frm.add_fetch("customer_loan_grant","accounts_receivable","accounts_receivable")
 cur_frm.add_fetch("customer_loan_grant","collection_days","due_days")
@@ -132,8 +133,12 @@ frappe.ui.form.on('Loan Collection', {
 	"one_day_penalty_amount": function(frm) {
 		var one_day_penalty_amount = frm.doc.one_day_penalty_amount;
 		var over_due_days = frm.doc.over_due_days;
+		var instalment_amount = frm.doc.instalment_amount;
 		var penalty_amount = (one_day_penalty_amount * over_due_days);
-
+		var over_due_amount = (over_due_days * instalment_amount);
+		var received_amount = instalment_amount + penalty_amount + over_due_amount;
+		
+		frm.set_value("received_amount",received_amount);
 		frm.set_value("penalty_amount",penalty_amount);
 	}
 });
@@ -150,7 +155,7 @@ frappe.ui.form.on('Loan Collection', {
 		var penalty_amount = (one_day_penalty_amount * over_due_days);
 		var over_due_amount = (over_due_days * instalment_amount);
 		var total_over_due_amount = ( last_instalment_over_due_amount + over_due_amount );
-		
+
 		frm.set_value("penalty_amount",penalty_amount);
 		frm.set_value("over_due_amount",over_due_amount);
 		frm.set_value("total_over_due_amount",total_over_due_amount);
@@ -188,7 +193,7 @@ frappe.call({
 		doctype: "Loan Collection",
 		cash_account: frm.doc.cash_account,
 		date: frm.doc.date,
-		instalment_amount: frm.doc.instalment_amount,
+		instalment_amount: frm.doc.received_amount,
 		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name
@@ -206,7 +211,7 @@ frappe.call({
 		doctype: "Loan Collection",
 		accounts_receivable: frm.doc.accounts_receivable,
 		date: frm.doc.date,
-		instalment_amount: frm.doc.instalment_amount,
+		instalment_amount: frm.doc.received_amount,
 		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
 		name: frm.doc.name

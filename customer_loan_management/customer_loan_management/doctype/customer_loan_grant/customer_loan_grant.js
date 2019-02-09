@@ -168,7 +168,8 @@ frappe.call({
 		interest_amount: frm.doc.interest_amount_per_day,
 		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
-		name: frm.doc.name
+		name: frm.doc.name,
+		due_amount : frm.doc.due_amount
      	},
 
 	callback:function(r){
@@ -186,7 +187,8 @@ frappe.call({
 		interest_amount: frm.doc.interest_amount_per_day,
 		cost_center: frm.doc.cost_center,
 		customer: frm.doc.customer,
-		name: frm.doc.name
+		name: frm.doc.name,
+		due_amount : frm.doc.due_amount
      	},
 
 	callback:function(r){
