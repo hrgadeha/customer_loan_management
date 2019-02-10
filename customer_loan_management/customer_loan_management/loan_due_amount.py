@@ -137,41 +137,34 @@ def update_penalty_amount_ar(doctype, cost_center = None, accounts_receivable = 
 
 @frappe.whitelist(allow_guest=True)
 def update_interest_amount(doctype, cost_center = None, interest_income_account = None, date = None, interest_amount = None, customer = None, name = None, due_amount = None):
-	if(due_amount != 0):
-		gl_entry = frappe.get_doc({
-		"doctype": "GL Entry", 
-		"posting_date": date,
-		"party": customer, 
-		"voucher_type":"Customer Loan Grant",
-		"party_type":"Customer",
-		"voucher_no":name,
-		"cost_center":cost_center,
-		"account":interest_income_account,
-		"credit":interest_amount,
-		"credit_in_account_currency":interest_amount
-		})
-		gl_entry.insert(ignore_permissions=True)
-		gl_entry.submit()
-	else:
-		pass
-
+	gl_entry = frappe.get_doc({
+	"doctype": "GL Entry", 
+	"posting_date": date,
+	"party": customer, 
+	"voucher_type":"Customer Loan Grant",
+	"party_type":"Customer",
+	"voucher_no":name,
+	"cost_center":cost_center,
+	"account":interest_income_account,
+	"credit":interest_amount,
+	"credit_in_account_currency":interest_amount
+	})
+	gl_entry.insert(ignore_permissions=True)
+	gl_entry.submit()
 
 @frappe.whitelist(allow_guest=True)
 def update_interest_amount_ar(doctype, cost_center = None, accounts_receivable = None, date = None, interest_amount = None, customer = None, name = None, due_amount = None):
-	if(due_amount != 0):
-		gl_entry = frappe.get_doc({
-		"doctype": "GL Entry", 
-		"posting_date": date,
-		"party": customer, 
-		"voucher_type":"Customer Loan Grant",
-		"party_type":"Customer",
-		"voucher_no":name,
-		"cost_center":cost_center,
-		"account":accounts_receivable,
-		"debit":interest_amount,
-		"debit_in_account_currency":interest_amount
-		})
-		gl_entry.insert(ignore_permissions=True)
-		gl_entry.submit()
-	else:
-		pass
+	gl_entry = frappe.get_doc({
+	"doctype": "GL Entry", 
+	"posting_date": date,
+	"party": customer, 
+	"voucher_type":"Customer Loan Grant",
+	"party_type":"Customer",
+	"voucher_no":name,
+	"cost_center":cost_center,
+	"account":accounts_receivable,
+	"debit":interest_amount,
+	"debit_in_account_currency":interest_amount
+	})
+	gl_entry.insert(ignore_permissions=True)
+	gl_entry.submit()

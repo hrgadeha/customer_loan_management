@@ -92,8 +92,7 @@ app_license = "MIT"
 
 scheduler_events = {
 	"daily": [
-		"customer_loan_management.customer_loan_management.loan_due_amount.update_interest_amount",
-		"customer_loan_management.customer_loan_management.loan_due_amount.update_interest_amount_ar"
+		"customer_loan_management.customer_loan_management.doctype.customer_loan_grant.customer_loan_grant.postDailyInterest"
 	]
 }
 
