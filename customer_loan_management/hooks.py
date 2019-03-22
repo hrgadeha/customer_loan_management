@@ -90,11 +90,11 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 
-scheduler_events = {
-	"daily": [
-		"customer_loan_management.customer_loan_management.doctype.customer_loan_grant.customer_loan_grant.postDailyInterest"
-	]
-}
+#scheduler_events = {
+#	"daily": [
+#		"customer_loan_management.customer_loan_management.doctype.customer_loan_grant.customer_loan_grant.postDailyInterest"
+#	]
+#}
 
 # Testing
 # -------

@@ -21,7 +21,6 @@ def get_column():
 			_("Total Outstanding Amount") + ":Currency:180"]
 
 def get_data(conditions,filters):
-
 	to_do = frappe.db.sql("""select customer, sales_partner, loan_amount, due_amount, over_due_days, total_outstanding_amount from `tabCustomer Loan Grant` where docstatus is not null %s order by date asc;"""%conditions, filters, as_list=1)
 	return to_do
 
